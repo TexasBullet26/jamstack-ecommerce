@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-ecommerce-professional",
+  "name": "gatsby-ecommerce",
   "private": true,
-  "description": "An E Commerce starter for Gatsby",
+  "description": "An ecommerce application leveraging Gatsby",
   "version": "0.1.0",
-  "author": "Nader Dabit <dabit3@gmail.com>",
+  "author": "Glenn Lanzer III <lanzertrey@gmail.com>",
   "dependencies": {
     "@stripe/react-stripe-js": "^1.0.0-beta.6",
     "@stripe/stripe-js": "^1.0.0-beta.8",
@@ -39,7 +39,9 @@
     "prettier": "^1.19.1"
   },
   "keywords": [
-    "gatsby"
+    "gatsby",
+    "ecommerce",
+    "react"
   ],
   "license": "MIT",
   "scripts": {
@@ -53,9 +55,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dabit3/gatsby-ecommerce-professional"
+    "url": "https://github.com/TexasBullet26/jamstack-ecommerce"
   },
   "bugs": {
-    "url": "https://github.com/dabit3/gatsby-ecommerce-professional/issues"
+    "url": "https://github.com/TexasBullet26/jamstack-ecommerce/issues"
   }
 }

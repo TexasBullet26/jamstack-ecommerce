@@ -1,5 +1,36 @@
-type Todo @model {
+############################################################
+# In the schema we've created, we want to have             #
+# two authorization types:ccccccccccccccccccccccccccccccccc#
+#   1. Admin users can perform all operations              #
+#   2. Public access to read items                         #
+#                                                          #
+# Directives:                                              #
+#                                                          #
+# @model:                                                  #
+# This directive will scaffold out a DynamoDB              #
+# database, addition CRUD (Create, Read, Update, Delete) & #
+# list GraphQL schema operations, and GraphQL resolvers    #
+# mapping between the operations and the database.         #
+#                                                          #
+# @auth:                                                   #
+# This directive allows us to set up authorization rules   #
+# on either a GraphQL type or field.                       #
+############################################################
+
+type Product
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: groups, groups: ["Admin"] }
+    ]
+  ) {
   id: ID!
+  categories: [String]!
+  price: Float!
   name: String!
-  description: String
+  image: String!
+  description: String!
+  currentInventory: Int!
+  brand: String
 }

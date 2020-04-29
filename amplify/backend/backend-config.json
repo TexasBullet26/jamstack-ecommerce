@@ -28,5 +28,30 @@
 			"service": "S3",
 			"providerPlugin": "awscloudformation"
 		}
+	},
+	"api": {
+		"jamstackecommerceapi": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"additionalAuthenticationProviders": [
+						{
+							"authenticationType": "API_KEY",
+							"apiKeyConfig": {
+								"description": "gatsby",
+								"apiKeyExpirationDays": "100"
+							}
+						}
+					],
+					"defaultAuthentication": {
+						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
+						"userPoolConfig": {
+							"userPoolId": "authjamstackecommercef4146001"
+						}
+					}
+				}
+			}
+		}
 	}
 }

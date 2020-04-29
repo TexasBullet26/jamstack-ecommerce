@@ -10,6 +10,16 @@
             "StackName": "amplify-jamstackecommerce-dev-173227",
             "StackId": "arn:aws:cloudformation:us-east-2:582978833385:stack/amplify-jamstackecommerce-dev-173227/2785e340-89a0-11ea-9489-0696b95a38c4",
             "AmplifyAppId": "d1pcvxuw96bdxo"
+        },
+        "categories": {
+            "function": {
+                "jamstackecommercef4146001PostConfirmation": {
+                    "GROUP": "Admin"
+                }
+            },
+            "auth": {
+                "jamstackecommercef4146001": {}
+            }
         }
     }
 }

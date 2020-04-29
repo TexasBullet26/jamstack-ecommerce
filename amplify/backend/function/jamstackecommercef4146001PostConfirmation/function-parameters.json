@@ -1,0 +1,16 @@
+{
+    "trigger": true,
+    "modules": [
+        "add-to-group"
+    ],
+    "parentResource": "jamstackecommercef4146001",
+    "functionName": "jamstackecommercef4146001PostConfirmation",
+    "resourceName": "jamstackecommercef4146001PostConfirmation",
+    "parentStack": "auth",
+    "triggerEnvs": [],
+    "triggerDir": "/data/data/com.termux/files/usr/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/PostConfirmation",
+    "triggerTemplate": "PostConfirmation.json.ejs",
+    "roleName": "jamstackecommercef4146001PostConfirmation",
+    "skipEdit": true,
+    "GROUP": "Admin"
+}

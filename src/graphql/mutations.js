@@ -17,7 +17,7 @@ export const createProduct = /* GraphQL */ `
       brand
     }
   }
-`;
+`
 export const updateProduct = /* GraphQL */ `
   mutation UpdateProduct(
     $input: UpdateProductInput!
@@ -34,7 +34,7 @@ export const updateProduct = /* GraphQL */ `
       brand
     }
   }
-`;
+`
 export const deleteProduct = /* GraphQL */ `
   mutation DeleteProduct(
     $input: DeleteProductInput!
@@ -51,4 +51,4 @@ export const deleteProduct = /* GraphQL */ `
       brand
     }
   }
-`;
+`

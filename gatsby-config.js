@@ -15,11 +15,11 @@ module.exports = {
     `gatsby-plugin-postcss`,
     `gatsby-plugin-react-helmet`,
     {
-      resolve: "gatsby-plugin-web-font-loader",
+      resolve: 'gatsby-plugin-web-font-loader',
       options: {
         custom: {
-          families: ["Eina, Eina-SemiBold"],
-          urls: ["/fonts/fonts.css"],
+          families: ['Eina, Eina-SemiBold'],
+          urls: ['/fonts/fonts.css'],
         },
       },
     },

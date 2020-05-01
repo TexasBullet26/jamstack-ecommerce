@@ -1,11 +1,15 @@
 function slugify(string) {
-  const a = 'àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;'
-  const b = 'aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------'
+  const a =
+    'àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;'
+  const b =
+    'aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------'
   const p = new RegExp(a.split('').join('|'), 'g')
 
-  return string.toString().toLowerCase()
+  return string
+    .toString()
+    .toLowerCase()
     .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+    .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
     .replace(/&/g, '-and-') // Replace & with 'and'
     .replace(/[^\w-]+/g, '') // Remove all non-word characters
     .replace(/--+/g, '-') // Replace multiple - with single -
@@ -14,12 +18,12 @@ function slugify(string) {
 }
 
 function titleIfy(slug) {
-  var words = slug.split('-');
+  var words = slug.split('-')
   for (var i = 0; i < words.length; i++) {
-    var word = words[i];
-    words[i] = word.charAt(0).toUpperCase() + word.slice(1);
+    var word = words[i]
+    words[i] = word.charAt(0).toUpperCase() + word.slice(1)
   }
-  return words.join(' ');
+  return words.join(' ')
 }
 
 function getTrimmedString(string, length = 8) {
@@ -30,6 +34,4 @@ function getTrimmedString(string, length = 8) {
   }
 }
 
-export {
-  slugify, titleIfy, getTrimmedString
-}
+export { slugify, titleIfy, getTrimmedString }

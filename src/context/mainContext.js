@@ -1,6 +1,6 @@
-import React from "react"
+import React from 'react'
 import { StaticQuery, graphql } from 'gatsby'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 const mainQuery = graphql`
   query {
@@ -15,7 +15,7 @@ const STORAGE_KEY = 'GATSBY_ECOMMERCE_STARTER_'
 const initialState = {
   cart: [],
   numberOfItemsInCart: 0,
-  total: 0
+  total: 0,
 }
 
 const SiteContext = React.createContext()
@@ -41,11 +41,16 @@ class ContextProviderComponent extends React.Component {
     const storageState = JSON.parse(window.localStorage.getItem(STORAGE_KEY))
     const { cart } = storageState
     cart.push(item)
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      cart, numberOfItemsInCart: cart.length, total: calculateTotal(cart)
-    }))
-    toast("Successfully added item to cart!", {
-      position: toast.POSITION.TOP_LEFT
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        cart,
+        numberOfItemsInCart: cart.length,
+        total: calculateTotal(cart),
+      })
+    )
+    toast('Successfully added item to cart!', {
+      position: toast.POSITION.TOP_LEFT,
     })
     this.forceUpdate()
   }
@@ -53,11 +58,16 @@ class ContextProviderComponent extends React.Component {
   removeFromCart = (item) => {
     const storageState = JSON.parse(window.localStorage.getItem(STORAGE_KEY))
     let { cart } = storageState
-    cart = cart.filter(c => c.id !== item.id)
+    cart = cart.filter((c) => c.id !== item.id)
 
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      cart, numberOfItemsInCart: cart.length, total: calculateTotal(cart)
-    }))
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        cart,
+        numberOfItemsInCart: cart.length,
+        total: calculateTotal(cart),
+      })
+    )
     this.forceUpdate()
   }
 
@@ -78,25 +88,24 @@ class ContextProviderComponent extends React.Component {
 
     return (
       <StaticQuery query={mainQuery}>
-        { queryData => {
+        {(queryData) => {
           return (
-            <SiteContext.Provider value={{
-              ...state,
-               navItems: queryData,
-               addToCart: this.addToCart,
-               clearCart: this.clearCart,
-               removeFromCart: this.removeFromCart
-            }}>
-             {this.props.children}
-           </SiteContext.Provider>
+            <SiteContext.Provider
+              value={{
+                ...state,
+                navItems: queryData,
+                addToCart: this.addToCart,
+                clearCart: this.clearCart,
+                removeFromCart: this.removeFromCart,
+              }}
+            >
+              {this.props.children}
+            </SiteContext.Provider>
           )
         }}
-        </StaticQuery>
+      </StaticQuery>
     )
   }
 }
 
-export {
-  SiteContext,
-  ContextProviderComponent
-}
+export { SiteContext, ContextProviderComponent }

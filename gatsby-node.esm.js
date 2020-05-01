@@ -14,14 +14,13 @@ exports.createPages = async ({ graphql, actions }) => {
     context: {
       content: inventory,
       title: 'all',
-      type: "categoryPage"
+      type: 'categoryPage',
     },
   })
 
-
   const inventoryByCategory = inventory.reduce((acc, next) => {
     const categories = next.categories
-    categories.forEach(c => {
+    categories.forEach((c) => {
       if (acc[c]) {
         acc[c].items.push(next)
       } else {
@@ -35,8 +34,9 @@ exports.createPages = async ({ graphql, actions }) => {
 
   const categories = Object.keys(inventoryByCategory)
 
-  categories.map(async(category, index) => {
-    const previous = index === categories.length - 1 ? null : categories[index + 1].node
+  categories.map(async (category, index) => {
+    const previous =
+      index === categories.length - 1 ? null : categories[index + 1].node
     const next = index === 0 ? null : categories[index - 1]
     createPage({
       path: slugify(category),
@@ -44,15 +44,16 @@ exports.createPages = async ({ graphql, actions }) => {
       context: {
         content: inventoryByCategory[category],
         title: category,
-        type: "categoryPage",
+        type: 'categoryPage',
         previous,
         next,
       },
     })
   })
 
-  inventory.map(async(item, index) => {
-    const previous = index === inventory.length - 1 ? null : inventory[index + 1].node
+  inventory.map(async (item, index) => {
+    const previous =
+      index === inventory.length - 1 ? null : inventory[index + 1].node
     const next = index === 0 ? null : inventory[index - 1]
     createPage({
       path: slugify(item.name),
@@ -60,7 +61,7 @@ exports.createPages = async ({ graphql, actions }) => {
       context: {
         content: item,
         title: item.name,
-        type: "itemPage",
+        type: 'itemPage',
         previous,
         next,
       },
@@ -68,13 +69,18 @@ exports.createPages = async ({ graphql, actions }) => {
   })
 }
 
-exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
+exports.sourceNodes = async ({
+  actions,
+  createNodeId,
+  createContentDigest,
+}) => {
   const { createNode } = actions
   const inventory = await getInventory()
 
-  /* create nav info for categories */ 
-  const categoryNames = inventory.reduce((acc, next) =>  {
-    next.categories.forEach(c => {
+  /* create nav info for categories */
+
+  const categoryNames = inventory.reduce((acc, next) => {
+    next.categories.forEach((c) => {
       if (!acc.includes(c)) acc.push(c)
     })
     return acc
@@ -82,7 +88,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
 
   const navData = {
     key: 'nav-info',
-    data: categoryNames
+    data: categoryNames,
   }
 
   const navNodeContent = JSON.stringify(navData)
@@ -94,8 +100,8 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       type: `NavInfo`,
       mediaType: `json`,
       content: navNodeContent,
-      contentDigest: createContentDigest(navData)
-    }
+      contentDigest: createContentDigest(navData),
+    },
   }
 
   const navNode = Object.assign({}, navData, navNodeMeta)
@@ -105,8 +111,8 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
   const inventoryByCategory = inventory.reduce((acc, next) => {
     const categories = next.categories
 
-    categories.forEach(c => {
-      const index = acc.findIndex(item => item.name === c)
+    categories.forEach((c) => {
+      const index = acc.findIndex((item) => item.name === c)
       if (index !== -1) {
         const item = acc[index]
         item.itemCount = item.itemCount + 1
@@ -115,7 +121,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
         const item = {
           name: c,
           image: next.image,
-          itemCount: 1
+          itemCount: 1,
         }
         acc.push(item)
       }
@@ -125,7 +131,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
 
   const catData = {
     key: 'category-info',
-    data: inventoryByCategory
+    data: inventoryByCategory,
   }
 
   const catNodeContent = JSON.stringify(catData)
@@ -137,8 +143,8 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       type: `CategoryInfo`,
       mediaType: `json`,
       content: catNodeContent,
-      contentDigest: createContentDigest(catData)
-    }
+      contentDigest: createContentDigest(catData),
+    },
   }
 
   const catNode = Object.assign({}, catData, catNodeMeta)
@@ -147,7 +153,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
   /* all inventory */
   const inventoryData = {
     key: 'all-inventory',
-    data: inventory
+    data: inventory,
   }
 
   const inventoryNodeContent = JSON.stringify(inventoryData)
@@ -159,8 +165,8 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       type: `InventoryInfo`,
       mediaType: `json`,
       content: inventoryNodeContent,
-      contentDigest: createContentDigest(inventoryData)
-    }
+      contentDigest: createContentDigest(inventoryData),
+    },
   }
 
   const inventoryNode = Object.assign({}, inventoryData, inventoryNodeMeta)

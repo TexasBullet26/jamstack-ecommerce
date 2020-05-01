@@ -1,17 +1,15 @@
 {
-    "projectName": "jamstackecommerce",
-    "version": "3.0",
-    "frontend": "javascript",
-    "javascript": {
-        "framework": "react",
-        "config": {
-            "SourceDir": "src ",
-            "DistributionDir": "public ",
-            "BuildCommand": "gatsby build ",
-            "StartCommand": "npm run start "
-        }
-    },
-    "providers": [
-        "awscloudformation"
-    ]
+  "projectName": "jamstackecommerce",
+  "version": "3.0",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react",
+    "config": {
+      "SourceDir": "src ",
+      "DistributionDir": "public ",
+      "BuildCommand": "gatsby build ",
+      "StartCommand": "npm run start "
+    }
+  },
+  "providers": ["awscloudformation"]
 }

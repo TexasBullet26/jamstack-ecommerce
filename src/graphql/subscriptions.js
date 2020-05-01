@@ -14,7 +14,7 @@ export const onCreateProduct = /* GraphQL */ `
       brand
     }
   }
-`;
+`
 export const onUpdateProduct = /* GraphQL */ `
   subscription OnUpdateProduct {
     onUpdateProduct {
@@ -28,7 +28,7 @@ export const onUpdateProduct = /* GraphQL */ `
       brand
     }
   }
-`;
+`
 export const onDeleteProduct = /* GraphQL */ `
   subscription OnDeleteProduct {
     onDeleteProduct {
@@ -42,4 +42,4 @@ export const onDeleteProduct = /* GraphQL */ `
       brand
     }
   }
-`;
+`

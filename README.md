@@ -46,12 +46,12 @@ This project is styled using Tailwind. To learn more how this works, check out t
 
 The main files, components, and images you may want to change / modify are:
 
-__Logo__ - src/images/logo.png   
-__Buttons, Nav, Header__ - src/components   
-__Form components__ - src/components/formComponents   
-__Context (state)__ - src/context/mainContext.js   
-__Pages (admin, cart, checkout, index)__ - src/pages   
-__Templates (category view, single item view, inventory views)__ - src/templates   
+**Logo** - src/images/logo.png  
+**Buttons, Nav, Header** - src/components  
+**Form components** - src/components/formComponents  
+**Context (state)** - src/context/mainContext.js  
+**Pages (admin, cart, checkout, index)** - src/pages  
+**Templates (category view, single item view, inventory views)** - src/templates
 
 ### How it works
 
@@ -59,7 +59,7 @@ As it is set up, inventory is fetched from a local hard coded array of inventory
 
 #### Configuring inventory provider
 
-Update __providers/inventoryProvider.js__ with your own inventory provider.
+Update **providers/inventoryProvider.js** with your own inventory provider.
 
 #### Download images at build time
 
@@ -81,19 +81,19 @@ function getImageKey(url) {
 function getPathName(url, pathName = 'downloads') {
   let reqPath = path.join(__dirname, '..')
   let key = getImageKey(url)
-  key = key.replace(/%/g, "")
+  key = key.replace(/%/g, '')
   const rawPath = `${reqPath}/public/${pathName}/${key}`
   return rawPath
 }
 
-async function downloadImage (url) {
+async function downloadImage(url) {
   return new Promise(async (resolve, reject) => {
     const path = getPathName(url)
     const writer = fs.createWriteStream(path)
     const response = await axios({
       url,
       method: 'GET',
-      responseType: 'stream'
+      responseType: 'stream',
     })
     response.data.pipe(writer)
     writer.on('finish', resolve)
@@ -104,7 +104,7 @@ async function downloadImage (url) {
 export default downloadImage
 ```
 
-You can use this function in __gatsby-node.esm.js__, map over the inventory data after fetching and replace the image paths with a reference to the location of the downloaded images, probably would look something like this:
+You can use this function in **gatsby-node.esm.js**, map over the inventory data after fetching and replace the image paths with a reference to the location of the downloaded images, probably would look something like this:
 
 ```javascript
 await Promise.all(
@@ -124,11 +124,11 @@ await Promise.all(
 
 ### Updating with Auth / Admin panel
 
-1. Update __src/pages/admin.js__ with sign up, sign, in, sign out, and confirm sign in methods.
+1. Update **src/pages/admin.js** with sign up, sign, in, sign out, and confirm sign in methods.
 
-2. Update __src/templates/ViewInventory.js__ with methods to interact with the actual inventory API.
+2. Update **src/templates/ViewInventory.js** with methods to interact with the actual inventory API.
 
-3. Update __src/components/formComponents/AddInventory.js__ with methods to add item to actual inventory API.
+3. Update **src/components/formComponents/AddInventory.js** with methods to add item to actual inventory API.
 
 ### Roadmap for V1
 

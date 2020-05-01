@@ -17,5 +17,5 @@ export {
   Showcase,
   DisplaySmall,
   DisplayMedium,
-  Spacer
+  Spacer,
 }

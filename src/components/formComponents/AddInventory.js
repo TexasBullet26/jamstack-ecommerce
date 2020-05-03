@@ -1,4 +1,7 @@
 import React from 'react'
+import { Storage, API, graphqlOperation } from 'aws-amplify'
+import { createProduct } from '../../graphql/mutations'
+import uuid from 'uuid/v4'
 
 const initialState = {
   name: '',
@@ -16,11 +19,18 @@ class AddInventory extends React.Component {
     this.setState(() => initialState)
   }
   onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value })
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
   }
   onImageChange = async (e) => {
     const file = e.target.files[0]
-    this.setState({ image: file })
+    const fileName = uuid() + file.name
+    // save the image in S3 when it's uploaded
+    await Storage.put(fileName, file)
+    this.setState({
+      image: fileName,
+    })
     // const storageUrl = await Storage.put('example.png', file, {
     //     contentType: 'image/png'
     // })
@@ -46,7 +56,16 @@ class AddInventory extends React.Component {
       !image
     )
       return
-    // add to database
+    // create the item in the database
+    const item = {
+      ...this.state,
+      categories: categories.replace(/\s/g, '').split(','),
+    }
+    await API.graphql(
+      graphqlOperation(createProduct, {
+        input: item,
+      })
+    )
     this.clearForm()
   }
   render() {
@@ -61,7 +80,7 @@ class AddInventory extends React.Component {
     } = this.state
     return (
       <div>
-        <h3>Add Item</h3>
+        <h3> Add Item </h3>{' '}
         <div className='flex flex-1 justify-center'>
           <div className='w-full max-w-144'>
             <form className='bg-white shadow-xs rounded px-8 pt-6 pb-8 mb-4'>
@@ -70,8 +89,8 @@ class AddInventory extends React.Component {
                   className='block text-gray-700 text-sm font-bold mb-2'
                   htmlFor='name'
                 >
-                  Item name
-                </label>
+                  Item name{' '}
+                </label>{' '}
                 <input
                   onChange={this.onChange}
                   value={name}
@@ -81,14 +100,14 @@ class AddInventory extends React.Component {
                   placeholder='Item name'
                   name='name'
                 />
-              </div>
+              </div>{' '}
               <div className='mb-4'>
                 <label
                   className='block text-gray-700 text-sm font-bold mb-2'
                   htmlFor='price'
                 >
-                  Item price
-                </label>
+                  Item price{' '}
+                </label>{' '}
                 <input
                   onChange={this.onChange}
                   value={price}
@@ -98,14 +117,14 @@ class AddInventory extends React.Component {
                   placeholder='Item price'
                   name='price'
                 />
-              </div>
+              </div>{' '}
               <div className='mb-4'>
                 <label
                   className='block text-gray-700 text-sm font-bold mb-2'
                   htmlFor='description'
                 >
-                  Item Description
-                </label>
+                  Item Description{' '}
+                </label>{' '}
                 <input
                   onChange={this.onChange}
                   value={description}
@@ -114,23 +133,23 @@ class AddInventory extends React.Component {
                   placeholder='Item Description'
                   name='description'
                 />
-              </div>
+              </div>{' '}
               <div className='mb-4'>
                 <label
                   className='block text-gray-700 text-sm font-bold mb-2'
                   htmlFor='item image'
                 >
-                  Item image
-                </label>
-                <input type='file' onChange={(e) => this.onImageChange(e)} />
-              </div>
+                  Item image{' '}
+                </label>{' '}
+                <input type='file' onChange={(e) => this.onImageChange(e)} />{' '}
+              </div>{' '}
               <div className='mb-4'>
                 <label
                   className='block text-gray-700 text-sm font-bold mb-2'
                   htmlFor='currentInventory'
                 >
-                  In stock
-                </label>
+                  In stock{' '}
+                </label>{' '}
                 <input
                   onChange={this.onChange}
                   value={currentInventory}
@@ -139,14 +158,14 @@ class AddInventory extends React.Component {
                   placeholder='Items in stock'
                   name='currentInventory'
                 />
-              </div>
+              </div>{' '}
               <div className='mb-4'>
                 <label
                   className='block text-gray-700 text-sm font-bold mb-2'
                   htmlFor='categories'
                 >
-                  Item categories
-                </label>
+                  Item categories{' '}
+                </label>{' '}
                 <input
                   onChange={this.onChange}
                   value={categories}
@@ -155,14 +174,14 @@ class AddInventory extends React.Component {
                   placeholder='Comma separated list of item categories'
                   name='categories'
                 />
-              </div>
+              </div>{' '}
               <div className='mb-4'>
                 <label
                   className='block text-gray-700 text-sm font-bold mb-2'
                   htmlFor='brand'
                 >
-                  Item brand
-                </label>
+                  Item brand{' '}
+                </label>{' '}
                 <input
                   onChange={this.onChange}
                   value={brand}
@@ -171,29 +190,29 @@ class AddInventory extends React.Component {
                   placeholder='Item brand'
                   name='brand'
                 />
-              </div>
+              </div>{' '}
               <div className='flex items-center justify-between mt-4'>
                 <button
                   onClick={this.addItem}
                   className='bg-secondary hover:bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
                   type='button'
                 >
-                  Add Item
-                </button>
+                  Add Item{' '}
+                </button>{' '}
                 <a
                   onClick={this.clearForm}
                   className='inline-block align-baseline font-bold text-sm'
                   href='#'
                 >
-                  Clear Form
-                </a>
-              </div>
-            </form>
+                  Clear Form{' '}
+                </a>{' '}
+              </div>{' '}
+            </form>{' '}
             <p className='text-center text-gray-500 text-xs'>
-              &copy;2020 JAMstack ECommerce. All rights reserved.
-            </p>
-          </div>
-        </div>
+              & copy; 2020 JAMstack ECommerce.All rights reserved.{' '}
+            </p>{' '}
+          </div>{' '}
+        </div>{' '}
       </div>
     )
   }

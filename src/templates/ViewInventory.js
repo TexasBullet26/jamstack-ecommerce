@@ -4,6 +4,8 @@ import Image from '../components/Image'
 import { Link } from 'gatsby'
 import { slugify } from '../../utils/helpers'
 import { FaTimes } from 'react-icons/fa'
+import { API, graphqlOperation } from 'aws-amplify'
+import { listProducts } from '../graphql/queries'
 
 class ViewInventory extends React.Component {
   state = {
@@ -15,25 +17,38 @@ class ViewInventory extends React.Component {
     this.fetchInventory()
   }
   fetchInventory = async () => {
+    const inventoryData = await API.graphql(graphqlOperation(listProducts))
+    const { items } = inventoryData.data.listProducts
+    console.log('Inventory items: ', items)
     const inventory = await getInventory()
-    this.setState({ inventory })
+    this.setState({
+      inventory: items,
+    })
   }
   editItem = (item, index) => {
     const editingIndex = index
-    this.setState({ editingIndex, currentItem: item })
+    this.setState({
+      editingIndex,
+      currentItem: item,
+    })
   }
   saveItem = async (index) => {
     const inventory = [...this.state.inventory]
     inventory[index] = this.state.currentItem
     // update item in database
-    this.setState({ editingIndex: null, inventory })
+    this.setState({
+      editingIndex: null,
+      inventory,
+    })
   }
   deleteItem = async (index) => {
     const inventory = [
       ...this.state.inventory.slice(0, index),
       ...this.state.inventory.slice(index + 1),
     ]
-    this.setState({ inventory })
+    this.setState({
+      inventory,
+    })
   }
   onChange = (event) => {
     const currentItem = {
@@ -41,14 +56,16 @@ class ViewInventory extends React.Component {
       [event.target.name]: event.target.value,
     }
 
-    this.setState({ currentItem })
+    this.setState({
+      currentItem,
+    })
   }
   render() {
     const { inventory, currentItem, editingIndex } = this.state
     console.log('currentItem: ', currentItem)
     return (
       <div>
-        <h2>Inventory</h2>
+        <h2> Inventory </h2>{' '}
         {inventory.map((item, index) => {
           const isEditing = editingIndex === index
           if (isEditing) {
@@ -60,8 +77,8 @@ class ViewInventory extends React.Component {
                       className='w-32 m-0'
                       src={item.image}
                       alt={item.name}
-                    />
-                  </Link>
+                    />{' '}
+                  </Link>{' '}
                   <input
                     onChange={(e) => this.onChange(e, index)}
                     className='ml-8 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
@@ -70,7 +87,7 @@ class ViewInventory extends React.Component {
                     name='name'
                   />
                   <div className='flex flex-1 justify-end items-center'>
-                    <p className='m-0 text-sm mr-2'>In stock:</p>
+                    <p className='m-0 text-sm mr-2'> In stock: </p>{' '}
                     <input
                       onChange={this.onChange}
                       className='shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
@@ -85,15 +102,15 @@ class ViewInventory extends React.Component {
                       name='price'
                       placeholder='Item price'
                     />
-                  </div>
+                  </div>{' '}
                   <div
                     role='button'
                     onClick={() => this.saveItem(index)}
                     className='m-0 ml-10 text-gray-900 text-s cursor-pointer'
                   >
-                    <p className='text-sm ml-10 m-0'>Save</p>
-                  </div>
-                </div>
+                    <p className='text-sm ml-10 m-0'> Save </p>{' '}
+                  </div>{' '}
+                </div>{' '}
               </div>
             )
           }
@@ -105,33 +122,37 @@ class ViewInventory extends React.Component {
                     className='w-32 m-0'
                     src={item.image}
                     alt={item.name}
-                  />
-                </Link>
+                  />{' '}
+                </Link>{' '}
                 <Link to={slugify(item.name)}>
-                  <p className='m-0 pl-10 text-gray-600 text-sm'>{item.name}</p>
-                </Link>
+                  <p className='m-0 pl-10 text-gray-600 text-sm'>
+                    {' '}
+                    {item.name}{' '}
+                  </p>{' '}
+                </Link>{' '}
                 <div className='flex flex-1 justify-end'>
                   <p className='m-0 pl-10 text-gray-900 tracking-tighter text-sm'>
-                    In stock: {item.currentInventory}
-                  </p>
+                    In stock: {item.currentInventory}{' '}
+                  </p>{' '}
                   <p className='m-0 pl-20 text-gray-900 tracking-tighter font-semibold'>
-                    {DENOMINATION + item.price}
-                  </p>
-                </div>
+                    {' '}
+                    {DENOMINATION + item.price}{' '}
+                  </p>{' '}
+                </div>{' '}
                 <div className='flex items-center m-0 ml-10 text-gray-900 text-s cursor-pointer'>
-                  <FaTimes onClick={() => this.deleteItem(index)} />
+                  <FaTimes onClick={() => this.deleteItem(index)} />{' '}
                   <p
                     role='button'
                     onClick={() => this.editItem(item, index)}
                     className='text-sm ml-10 m-0'
                   >
-                    Edit
-                  </p>
-                </div>
-              </div>
+                    Edit{' '}
+                  </p>{' '}
+                </div>{' '}
+              </div>{' '}
             </div>
           )
-        })}
+        })}{' '}
       </div>
     )
   }

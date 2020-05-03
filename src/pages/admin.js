@@ -1,35 +1,87 @@
 import React from 'react'
+import { Auth } from 'aws-amplify'
 import SignUp from '../components/formComponents/SignUp'
 import ConfirmSignUp from '../components/formComponents/ConfirmSignUp'
 import SignIn from '../components/formComponents/SignIn'
 import Inventory from '../templates/Inventory'
 
 class Admin extends React.Component {
-  state = { formState: 'signUp', isAdmin: false }
+  state = {
+    formState: 'signUp',
+    isAdmin: false,
+  }
   toggleFormState = (formState) => {
-    this.setState(() => ({ formState }))
+    this.setState(() => ({
+      formState,
+    }))
   }
   async componentDidMount() {
-    // check and update signed in state
+    // check and update signed in state:
+    const user = await Auth.currentAuthenticatedUser()
+    const {
+      signInUserSession: {
+        idToken: { payload },
+      },
+    } = user
+    if (
+      payload['cognito:groups'] &&
+      payload['cognito:groups'].includes('Admin')
+    ) {
+      this.setState({
+        formState: 'signedIn',
+        isAdmin: true,
+      })
+    }
   }
   signUp = async (form) => {
     const { username, email, password } = form
-    // sign up
-    this.setState({ formState: 'confirmSignUp' })
+    // sign up a new user:
+    await Auth.signUp({
+      username,
+      password,
+      attributes: {
+        email,
+      },
+    })
+    this.setState({
+      formState: 'confirmSignUp',
+    })
   }
   confirmSignUp = async (form) => {
     const { username, authcode } = form
-    // confirm sign up
-    this.setState({ formState: 'signIn' })
+    // use MFA to confirm the new user:
+    await Auth.confirmSignUp(username, authcode)
+    this.setState({
+      formState: 'signIn',
+    })
   }
   signIn = async (form) => {
     const { username, password } = form
-    // signIn
-    this.setState({ formState: 'signedIn', isAdmin: true })
+    // sign in the new user:
+    await Auth.signIn(username, password)
+    // check to see if the user is an Admin, if so, show the inventory view
+    const user = await Auth.currentAuthenticatedUser()
+    const {
+      signInUserSession: {
+        idToken: { payload },
+      },
+    } = user
+    if (
+      payload['cognito:groups'] &&
+      payload['cognito:groups'].includes('Admin')
+    ) {
+      this.setState({
+        formState: 'signedIn',
+        isAdmin: true,
+      })
+    }
   }
   signOut = async () => {
-    // sign out
-    this.setState({ formState: 'signUp' })
+    // allow users to sign out:
+    await Auth.signOut()
+    this.setState({
+      formState: 'signUp',
+    })
   }
 
   render() {
@@ -58,7 +110,7 @@ class Admin extends React.Component {
           return isAdmin ? (
             <Inventory {...state} signOut={this.signOut} />
           ) : (
-            <h3>Not an admin</h3>
+            <h3> Not an admin </h3>
           )
         default:
           return null
@@ -69,10 +121,10 @@ class Admin extends React.Component {
       <div className='flex flex-col'>
         <div className='max-w-fw flex flex-col'>
           <div className='pt-10'>
-            <h1 className='text-5xl font-light'>Admin Panel</h1>
-          </div>
-          {renderForm(formState)}
-        </div>
+            <h1 className='text-5xl font-light'> Admin Panel </h1>{' '}
+          </div>{' '}
+          {renderForm(formState)}{' '}
+        </div>{' '}
       </div>
     )
   }

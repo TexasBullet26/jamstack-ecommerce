@@ -6,6 +6,7 @@ import { slugify } from '../../utils/helpers'
 import { FaTimes } from 'react-icons/fa'
 import { API, graphqlOperation } from 'aws-amplify'
 import { listProducts } from '../graphql/queries'
+import { updateProduct, deleteProduct } from '../graphql/mutations'
 
 class ViewInventory extends React.Component {
   state = {
@@ -36,12 +37,18 @@ class ViewInventory extends React.Component {
     const inventory = [...this.state.inventory]
     inventory[index] = this.state.currentItem
     // update item in database
+    await API.graphql(
+      graphqlOperation(updateProduct, {
+        input: this.state.currentItem,
+      })
+    )
     this.setState({
       editingIndex: null,
       inventory,
     })
   }
   deleteItem = async (index) => {
+    const id = this.state.inventory[index].id
     const inventory = [
       ...this.state.inventory.slice(0, index),
       ...this.state.inventory.slice(index + 1),
@@ -49,6 +56,13 @@ class ViewInventory extends React.Component {
     this.setState({
       inventory,
     })
+    await API.graphql(
+      graphqlOperation(deleteProduct, {
+        input: {
+          id,
+        },
+      })
+    )
   }
   onChange = (event) => {
     const currentItem = {
